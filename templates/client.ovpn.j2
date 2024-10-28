@@ -12,14 +12,11 @@ proto {{ openvpn_proto }}
 remote {{ openvpn_server_hostname }} {{ openvpn_port }}
 dev tun
 
-resolv-retry {{ openvpn_resolv_retry }}
 nobind
 keepalive {{ openvpn_keepalive_ping }} {{ openvpn_keepalive_timeout }}
 {% if openvpn_compression is not undefined and openvpn_compression != "" %}
 compress {{ openvpn_compression }}
 {% endif %}
-persist-key
-persist-tun
 verb 3
 
 {% if openvpn_use_ldap %}
@@ -29,12 +26,6 @@ auth-user-pass
 {% for option in openvpn_addl_client_options %}
 {{ option }}
 {% endfor %}
-
-route-method exe
-route-delay 2
-{% if openvpn_client_register_dns %}
-register-dns
-{% endif %}
 
 {% if tls_auth_required %}
 key-direction 1
